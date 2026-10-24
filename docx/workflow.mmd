@@ -1,0 +1,27 @@
+%% TaskMate 业务流程图（Mermaid 源码，GitHub / 博客园均可渲染）
+flowchart TD
+    U[用户自然语言输入<br/>文字 / 语音] --> UI{表现层<br/>Streamlit / CLI}
+    UI -->|语音| ASR[faster-whisper 转写]
+    ASR --> UI
+    UI --> A[Agent 大脑<br/>agent/agent.py]
+
+    A --> CTX[组装上下文<br/>系统提示词 + 当前日期 + 多轮记忆]
+    CTX --> LLM{LLM 决策<br/>OpenAI 兼容协议}
+    LLM -->|不需要工具| ANS[自然语言回复]
+    LLM -->|需要工具| TC[生成 tool_calls]
+
+    TC --> HUB[MCP Client<br/>agent/mcp_client.py]
+    HUB -->|stdio / JSON-RPC| SRV[MCP Server<br/>server/task_mcp_server.py]
+    SRV --> DB[(SQLite<br/>tasks + messages)]
+    DB --> SRV
+    SRV -->|工具结果 JSON| HUB
+    HUB -->|回填给 LLM，最多 8 轮| LLM
+
+    ANS --> UI
+    UI --> BOARD[侧栏任务看板<br/>统计 / 筛选 / 导出]
+    UI --> MEM[(对话记忆落库<br/>重启不丢)]
+    UI -->|可选| TTS[edge-tts 语音播报]
+
+    subgraph MOCK[离线演示模式 USE_MOCK_LLM=1]
+        M[规则假大脑<br/>agent/mock_llm.py] -.替代.-> LLM
+    end
