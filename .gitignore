@@ -1,0 +1,21 @@
+.env
+.env.hidden_for_ui_smoke
+__pycache__/
+*.pyc
+.venv/
+venv/
+data/*.db
+*.mp3
+*.wav
+.streamlit/secrets.toml
+.vscode/
+.idea/
+.DS_Store
+*.log
+_*.txt
+_*.py
+
+# 语音模型不入库：model.bin 单文件 138MB，超过 GitHub 100MB 上限，push 会被拒。
+# 用 models/README.md 里的命令或 scripts/fetch_asr_model.py 按需下载。
+models/whisper-*/
+*.bin

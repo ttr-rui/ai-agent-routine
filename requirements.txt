@@ -1,0 +1,21 @@
+# ---- 核心（必须）----
+mcp>=1.9.0,<2.0.0          # Model Context Protocol Python SDK（官方）
+                           # ⚠️ 必须锁 <2：MCP 2.x 把 FastMCP 改名为 MCPServer，
+                           #    装成 2.x 会导致 server 启动时 ModuleNotFoundError
+openai>=1.60.0             # LLM 客户端（兼容 OpenAI / DeepSeek / 通义 / 智谱）
+python-dotenv>=1.0.1       # 读取 .env 配置
+
+# ---- 前端界面（加分项）----
+streamlit>=1.40.0          # 网页 UI
+pandas>=2.2.0              # 任务看板表格
+
+# ---- 语音输入/输出（加分项，可选安装）----
+edge-tts>=6.1.19           # 微软 Edge 免费 TTS，零 key
+# faster-whisper>=1.1.0    # 本地语音转文字（不想用本地模型可注释掉，用云端接口）
+# av>=13,<14               # ⚠️ 装 faster-whisper 时必须锁 PyAV 大版本 <14：
+#                           #    PyAV 14+ 移除了 av.open 的 metadata_errors 参数，
+#                           #    faster-whisper 的 decode_audio 会抛 TypeError，
+#                           #    导致 ASR 永远"没听清"（BUG-12）
+
+# ---- 测试 ----
+pytest>=8.0.0

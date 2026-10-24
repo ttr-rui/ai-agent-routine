@@ -1,0 +1,12 @@
+{
+  "_comment": "把同一个 MCP Server 挂到任意支持 MCP 的客户端上（Claude Desktop / Cursor / Cherry Studio）。改掉绝对路径后，放进客户端的 mcp 配置文件即可，无需改动一行 Python 代码——这就是 MCP 的价值。",
+  "mcpServers": {
+    "taskmate": {
+      "command": "python",
+      "args": ["D:/your/path/taskmate-agent/server/task_mcp_server.py"],
+      "env": {
+        "TASK_DB_PATH": "D:/your/path/taskmate-agent/data/tasks.db"
+      }
+    }
+  }
+}

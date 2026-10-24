@@ -1,0 +1,39 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  offline-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run all offline suites (no API key required)
+        env:
+          USE_MOCK_LLM: "1"
+          PYTHONIOENCODING: utf-8
+        run: |
+          set -e
+          python tests/selftest.py
+          python tests/test_static_checks.py
+          python tests/test_mcp_integration.py
+          python tests/test_agent_loop_mock.py
+          python tests/test_task_views.py
+          python tests/test_e2e.py
+          python tests/test_ui_smoke.py
+
+      - name: Compile check
+        run: python -m compileall -q server agent ui main.py
